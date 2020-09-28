@@ -1,6 +1,7 @@
 from flask import Flask
 from vih_results import *  
 from covid_results import *
+from covid_ex import *
 app = Flask(__name__)
 
 @app.route('/')
@@ -80,6 +81,30 @@ def recuperacion_red_bayesiana_pais(pais):
     grafica_prediccion = prediccion_por_pais_cresta_bayesiana_recuperados(pais)
     print(grafica_prediccion)
     return grafica_prediccion
+
+@app.route('/covid/total')
+def covid_total_contagios():
+    return totaldecontagios
+
+@app.route('/covid/fecha_actual')
+def covid_fecha_actual():
+    return nombre_fecha_actual
+
+@app.route('/covid/provinciasmasafectadas')
+def covid_provincias_mas_afectadas():
+    return encoded_string_ex_covid1
+
+@app.route('/covid/provinciasmenosafectadas')
+def covid_provincias_menos_afectadas():
+    return encoded_string_ex_covid2
+
+@app.route('/covid/paisesmasafectados')
+def covid_paises_mas_afectados():
+    return encoded_string_ex_covid4
+
+@app.route('/covid/paisesmenosafectados')
+def covid_paises_menos_afectados():
+    return encoded_string_ex_covid3
 
 
 
