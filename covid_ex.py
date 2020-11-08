@@ -113,8 +113,6 @@ def crecimiento_diario():
         #print(encoded_string_covid7)
     return encoded_string_covid7
     
-crecimiento_diario()
-proporcion_de_contagios()
 def totaldecontagios_def():
     confirmedcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
     ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]

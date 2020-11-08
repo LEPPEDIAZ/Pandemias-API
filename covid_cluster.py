@@ -77,10 +77,10 @@ def cluster_covid():
 
     X = adj_matrix.toarray()
     distorsions = []
-    for k in range(2, 20):
-        kmeans = KMeans(n_clusters=k)
-        kmeans.fit(X)
-        distorsions.append(kmeans.inertia_)
+    #for k in range(2, 20):
+    #    kmeans = KMeans(n_clusters=k)
+    #    kmeans.fit(X)
+    #    distorsions.append(kmeans.inertia_)
 
     #fig = plt.figure(figsize=(15, 5))
     #plt.plot(range(2, 20), distorsions)

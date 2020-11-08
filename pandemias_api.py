@@ -6,6 +6,7 @@ from covid_cluster import *
 from covid_general_predictions import *
 
 from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -147,9 +148,10 @@ def recuperacion_lasso_pais(pais):
 @app.route('/covid/get_cluster')
 @cross_origin()
 def get_cluster():
-    print(cluster_covid())
-    return cluster_covid()
-
+    with open("cluster_covid.png", "rb") as image_file:
+        encoded_string_covid7 = base64.b64encode(image_file.read())
+        print(encoded_string_covid7)
+    return encoded_string_covid7
 
 @app.route('/covid/total')
 @cross_origin()
