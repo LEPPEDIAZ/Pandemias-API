@@ -2,6 +2,7 @@ from flask import Flask
 #from vih_results import *
 #from covid_results import *
 from covid_ex import *
+#from covid_cluster import *
 from covid_general_predictions import *
 
 from flask_cors import CORS, cross_origin
@@ -144,6 +145,14 @@ def recuperacion_lasso_pais(pais):
     grafica_prediccion = predicciones_por_pais_recuperacion("Lasso",pais)
     print(grafica_prediccion)
     return grafica_prediccion
+
+
+#@app.route('/covid/get_cluster')
+#@cross_origin()
+#def get_cluster():
+#    print(cluster_covid())
+#    return cluster_covid()
+
 
 @app.route('/covid/total')
 @cross_origin()

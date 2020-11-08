@@ -16,6 +16,11 @@ import base64
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score
 import warnings
+import seaborn as sns
+import networkx as nx
+import scipy.spatial.distance as ssd
+from scipy.cluster.hierarchy import linkage, dendrogram
+from sklearn.cluster import AgglomerativeClustering
 
 
 
@@ -3176,6 +3181,9 @@ def predicciones_por_pais_recuperacion(prediccion_escoger, pais):
             print(encoded_string_covid7)
         return encoded_string_covid7
 
+
+
+#cluster_covid()
 #predicciones_por_pais_mortalidad("RedesNeuronales","Guatemala")
 #predicciones_por_pais_mortalidad("RegresionCrestaBayesiana","Guatemala")
 #predicciones_por_pais_mortalidad("Lasso","Guatemala")
