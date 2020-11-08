@@ -1,6 +1,6 @@
 from flask import Flask
-from vih_results import *
-from covid_results import *
+#from vih_results import *
+#from covid_results import *
 from covid_ex import *
 from covid_general_predictions import *
 
@@ -14,25 +14,25 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def hello_world():
     return 'Bienvenidos! este un API para analisis y predicciones de diferentes enfermedades con resultados de graficas en base 64'
 
-@app.route('/vih/comparacion_sexo')
-def vih_comparacion_sexo():
-    return encoded_string
+#@app.route('/vih/comparacion_sexo')
+#def vih_comparacion_sexo():
+#    return encoded_string
 
-@app.route('/vih/comparacion_paternidad')
-def vih_comparacion_paternidad():
-    return encoded_string4
+#@app.route('/vih/comparacion_paternidad')
+#def vih_comparacion_paternidad():
+#    return encoded_string4
 
-@app.route('/vih/comparacion_hetero')
-def vih_comparacion_hetero():
-    return encoded_string3
+#@app.route('/vih/comparacion_hetero')
+#def vih_comparacion_hetero():
+#    return encoded_string3
 
-@app.route('/vih/comparacion_homo')
-def vih_comparacion_homo():
-    return encoded_string2
+#@app.route('/vih/comparacion_homo')
+#def vih_comparacion_homo():
+#    return encoded_string2
 
-@app.route('/vih/comparacion_contagios')
-def vih_compracion_contagios():
-    return encoded_string1
+#@app.route('/vih/comparacion_contagios')
+#def vih_compracion_contagios():
+#    return encoded_string1
 
 @app.route('/covid/confirmados_red_neuronal')
 @cross_origin()
@@ -84,22 +84,64 @@ def covid_recuperacion_lasso():
 @app.route('/covid/confirmados_red_bayesiana_pais/<pais>')
 @cross_origin()
 def confirmados_red_bayesiana_pais(pais):
-    grafica_prediccion = prediccion_por_pais_cresta_bayesiana(pais)
-    print(grafica_prediccion)
+    grafica_prediccion = predicciones_por_pais("RegresionCrestaBayesiana",pais)
+    #print(grafica_prediccion)
+    return grafica_prediccion
+
+@app.route('/covid/confirmados_red_neuronal_pais/<pais>')
+@cross_origin()
+def confirmados_red_neuronal_pais(pais):
+    grafica_prediccion = predicciones_por_pais("RedesNeuronales",pais)
+    #print(grafica_prediccion)
+    return grafica_prediccion
+
+@app.route('/covid/confirmados_lasso_pais/<pais>')
+@cross_origin()
+def confirmados_lasso_pais(pais):
+    grafica_prediccion = predicciones_por_pais("Lasso",pais)
+    #print(grafica_prediccion)
     return grafica_prediccion
 
 
 @app.route('/covid/mortalidad_red_bayesiana_pais/<pais>')
 @cross_origin()
 def mortalidad_red_bayesiana_pais(pais):
-    grafica_prediccion = prediccion_por_pais_cresta_bayesiana_mortalidad(pais)
-    print(grafica_prediccion)
+    grafica_prediccion = predicciones_por_pais_mortalidad("RegresionCrestaBayesiana",pais)
     return grafica_prediccion
+
+
+@app.route('/covid/mortalidad_red_neuronal_pais/<pais>')
+@cross_origin()
+def mortalidad_red_neuronal_pais(pais):
+    grafica_prediccion = predicciones_por_pais_mortalidad("RedesNeuronales",pais)
+    return grafica_prediccion
+
+
+@app.route('/covid/mortalidad_lasso_pais/<pais>')
+@cross_origin()
+def mortalidad_lasso_pais(pais):
+    grafica_prediccion = predicciones_por_pais_mortalidad("Lasso",pais)
+    return grafica_prediccion
+
 
 @app.route('/covid/recuperacion_red_bayesiana_pais/<pais>')
 @cross_origin()
 def recuperacion_red_bayesiana_pais(pais):
-    grafica_prediccion = prediccion_por_pais_cresta_bayesiana_recuperados(pais)
+    grafica_prediccion = predicciones_por_pais_recuperacion("RegresionCrestaBayesiana",pais)
+    print(grafica_prediccion)
+    return grafica_prediccion
+
+@app.route('/covid/recuperacion_red_neuronal_pais/<pais>')
+@cross_origin()
+def recuperacion_red_neuronal_pais(pais):
+    grafica_prediccion = predicciones_por_pais_recuperacion("RedesNeuronales",pais)
+    print(grafica_prediccion)
+    return grafica_prediccion
+
+@app.route('/covid/recuperacion_lasso_pais/<pais>')
+@cross_origin()
+def recuperacion_lasso_pais(pais):
+    grafica_prediccion = predicciones_por_pais_recuperacion("Lasso",pais)
     print(grafica_prediccion)
     return grafica_prediccion
 
