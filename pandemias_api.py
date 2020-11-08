@@ -36,40 +36,50 @@ def vih_compracion_contagios():
 
 @app.route('/covid/confirmados_red_neuronal')
 @cross_origin()
-def confirmados_red_neuronal():
+def covid_confirmados_red_neuronal():
     return predicciones_generales("RedesNeuronales")
 
 @app.route('/covid/confirmados_red_bayesiana')
 @cross_origin()
 def covid_confirmados_red_bayesiana():
-    return encoded_string_covid2
+    return predicciones_generales("RegresionCrestaBayesiana")
 
-@app.route('/covid/mortalidad_polinomeal')
+@app.route('/covid/confirmados_lasso')
 @cross_origin()
-def covid_mortalidad_polinomeal():
-    return encoded_string_covid3
+def covid_confirmados_lasso():
+    return predicciones_generales("Lasso")
 
 @app.route('/covid/mortalidad_red_bayesiana')
 @cross_origin()
 def covid_mortalidad_red_bayesiana():
-    return encoded_string_covid4
+    return predicciones_mortalidad_generales("RegresionCrestaBayesiana")
 
-@app.route('/covid/recuperacion_polinomeal')
+@app.route('/covid/mortalidad_red_neuronal')
 @cross_origin()
-def covid_recuperacion_polinomeal():
-    return encoded_string_covid5
+def covid_mortalidad_red_neuronal():
+    return predicciones_mortalidad_generales("RedesNeuronales")
+
+@app.route('/covid/mortalidad_lasso')
+@cross_origin()
+def covid_mortalidad_lasso():
+    return predicciones_mortalidad_generales("Lasso")
+
 
 @app.route('/covid/recuperacion_red_bayesiana')
 @cross_origin()
 def covid_recuperacion_red_bayesiana():
-    return encoded_string_covid6
+    return predicciones_recuperacion_generales("RegresionCrestaBayesiana")
 
-@app.route('/covid/confirmados_polinomeal_pais/<pais>')
+@app.route('/covid/recuperacion_red_neuronal')
 @cross_origin()
-def confirmados_polinomeal_pais(pais):
-    grafica_prediccion = prediccion_por_pais_confirmados_polinomeal(pais)
-    print(grafica_prediccion)
-    return grafica_prediccion
+def covid_recuperacion_red_neuronal():
+    return predicciones_recuperacion_generales("RedesNeuronales")
+
+@app.route('/covid/recuperacion_lasso')
+@cross_origin()
+def covid_recuperacion_lasso():
+    return predicciones_recuperacion_generales("RedesNeuronales")
+
 
 @app.route('/covid/confirmados_red_bayesiana_pais/<pais>')
 @cross_origin()
@@ -78,12 +88,6 @@ def confirmados_red_bayesiana_pais(pais):
     print(grafica_prediccion)
     return grafica_prediccion
 
-@app.route('/covid/mortalidad_polinomeal_pais/<pais>')
-@cross_origin()
-def mortalidad_polinomeal_pais(pais):
-    grafica_prediccion = prediccion_por_pais_mortalidad_polinomeal(pais)
-    print(grafica_prediccion)
-    return grafica_prediccion
 
 @app.route('/covid/mortalidad_red_bayesiana_pais/<pais>')
 @cross_origin()
