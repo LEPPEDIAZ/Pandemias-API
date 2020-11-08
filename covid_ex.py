@@ -13,93 +13,108 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 
-confirmedcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
-confirmedcovid.head()
-ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
-print(len(ultimo_confirmado))
-pais_confirmado = confirmedcovid[confirmedcovid.columns[1]]
-print(len(ultimo_confirmado))
-width = 0.35 
-#confirmedcovid.plot.bar(x = 'Country/Region', y = '5/10/20')
-order_confirmed = confirmedcovid.sort_values(confirmedcovid.columns[-1], ascending=True)
-ultimo_confirmado_ordenado = order_confirmed[order_confirmed.columns[-1]]
-#print("confirmados",ultimo_confirmado_ordenado)
-ultimo_confirmado_ordenado_2 = order_confirmed[order_confirmed.columns[1]]
-#print("paises", ultimo_confirmado_ordenado_2 )
-confirmedcovid1 = confirmedcovid.dropna()
-top_covid_confirmed = confirmedcovid1.nlargest(20, confirmedcovid1.columns[-1])
-top_covid_confirmed.head()
-top_covid_confirmed_graph = top_covid_confirmed.plot.barh(x = 'Province/State', y = top_covid_confirmed.columns[-1])
-top_covid_confirmed_graph.figure.savefig('provinciasmasafectadasporcovid.png', bbox_inches='tight')
-nombre_archivo = 'provinciasmasafectadasporcovid.png'
-with open(nombre_archivo, "rb") as image_file:
-    encoded_string_ex_covid1 = base64.b64encode(image_file.read())
-    print(encoded_string_ex_covid1)
+def proporcion_de_contagios():
+    import base64
+    plt.style.use(['dark_background'])
+    plt.rcParams['axes.facecolor'] = 'black'
+    #plt.figure(figsize=(20, 20))
+    confirmedcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
+    ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
+    totaldecontagios= ultimo_confirmado.sum()
+    totaldecontagios = int(totaldecontagios)
+    #totaldecontagios = "{:,}".format(totaldecontagios)
+    
+    deathcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
+    ultimo_death = deathcovid[deathcovid.columns[-1]]
+    totaldecontagiosdeath = ultimo_death.sum()
+    totaldecontagiosdeath = int(totaldecontagiosdeath)
+    #totaldecontagiosdeath = "{:,}".format(totaldecontagiosdeath)
+    
+    recoveredcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
+    ultimo_recovered = recoveredcovid[recoveredcovid.columns[-1]]
+    totaldecontagiosrecovered= ultimo_recovered.sum()
+    totaldecontagiosrecovered = int(totaldecontagiosrecovered)
+    #totaldecontagiosrecovered = "{:,}".format(totaldecontagiosrecovered)
 
-print("Provincias Mas Afectadas")
+    labels = 'Casos sobre Confirmados: '+ str("{:,}".format(totaldecontagios)), 'Casos sobre Mortalidad: '+ str("{:,}".format(totaldecontagiosdeath)), 'Casos sobre recuperados: '+ str("{:,}".format(totaldecontagiosrecovered))
+    sizes = [totaldecontagios, totaldecontagiosdeath, totaldecontagiosrecovered]
+    explode = (0, 0, 0)  
+    
+    colors = ["green", "red", "blue"]
 
-confirmedcovid1 = confirmedcovid.dropna()
-top_covid_confirmed = confirmedcovid1.nsmallest(20, confirmedcovid1.columns[-1])
-top_covid_confirmed.head()
-top_covid_confirmed_graph = top_covid_confirmed.plot.barh(x = 'Province/State', y = top_covid_confirmed.columns[-1])
-print("Provincias Menos Afectadas")
-top_covid_confirmed_graph.figure.savefig('provinciasmenosafectadasporcovid.png', bbox_inches='tight')
-nombre_archivo = 'provinciasmenosafectadasporcovid.png'
-with open(nombre_archivo, "rb") as image_file:
-    encoded_string_ex_covid2 = base64.b64encode(image_file.read())
-    print(encoded_string_ex_covid2)
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',
+            shadow=True, startangle=90, colors=colors)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    
+    plt.title('COVID-19: Proporción entre recuperados , confirmados y casos de mortalidad' )
+    nombre_archivo = "piechart covid.png"
+    figure = plt.gcf() # get current figure
+    figure.set_size_inches(16, 8)
+    plt.savefig(nombre_archivo)
+    with open(nombre_archivo, "rb") as image_file:
+        encoded_string_covid7 = base64.b64encode(image_file.read())
+        print(encoded_string_covid7)
+    return encoded_string_covid7
 
-print("Provincias Mas Afectadas")
+def crecimiento_diario():
+    import base64
+    plt.style.use(['dark_background'])
+    plt.rcParams['axes.facecolor'] = 'black'
 
+    #plt.figure(figsize=(20, 20))
+    confirmedcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
+    ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
+    ultimo_confirmado2 = confirmedcovid[confirmedcovid.columns[-2]]
+    totaldecontagios= ultimo_confirmado.sum() - ultimo_confirmado2.sum()
+    totaldecontagios = int(totaldecontagios)
+    
+    #print("ultimo confirmado" + str(ultimo_confirmado.sum()) + "ayer confirmado" + str(ultimo_confirmado2.sum()))
+    #totaldecontagios = "{:,}".format(totaldecontagios)
+    
+    deathcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
+    ultimo_death = deathcovid[deathcovid.columns[-1]]
+    ultimo_death2 = deathcovid[deathcovid.columns[-2]]
+    totaldecontagiosdeath = ultimo_death.sum() - ultimo_death2.sum()
+    totaldecontagiosdeath = int(totaldecontagiosdeath)
+    #totaldecontagiosdeath = "{:,}".format(totaldecontagiosdeath)
+    
+    recoveredcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
+    ultimo_recovered = recoveredcovid[recoveredcovid.columns[-1]]
+    ultimo_recovered2 = recoveredcovid[recoveredcovid.columns[-1]]
+    totaldecontagiosrecovered= ultimo_recovered.sum() - ultimo_recovered2.sum()
+    totaldecontagiosrecovered = int(totaldecontagiosrecovered)
+    #totaldecontagiosrecovered = "{:,}".format(totaldecontagiosrecovered)
+    
+    #print("ultimo confirmado" + str(ultimo_recovered.sum()) + "ayer confirmado" + str(ultimo_recovered.sum()))
 
-print("\n----------- Calcular media de confirmados -----------\n")
-print(ultimo_confirmado.mean())
- 
-print("\n----------- Calcular mediana de confirmados -----------\n")
-print(ultimo_confirmado.median())
- 
-print("\n----------- Calcular moda de confirmados -----------\n")
-print(ultimo_confirmado.mode())
-
-print("\n----------- Calcular moda de nombre confirmados -----------\n")
-print(pais_confirmado.mode())
-
-ax = ultimo_confirmado.plot.box()
-print("MOST AFFECTED COUNTRY")
-confirmedcovid.loc[confirmedcovid[confirmedcovid.columns[-1]].idxmax()]
-
-
-print("Paises Menos Afectados")
-ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
-clean_countries = confirmedcovid.groupby('Country/Region', as_index=False)[confirmedcovid.columns[-1]].sum()
-clean_countries.head()
-top_covid_confirmed = clean_countries.nsmallest(20, clean_countries.columns[-1])
-top_covid_confirmed.head()
-top_covid_confirmed_graph = top_covid_confirmed.plot.barh(x = 'Country/Region', y = top_covid_confirmed.columns[-1])
-top_covid_confirmed_graph.figure.savefig('paisesmenosafectados.png', bbox_inches='tight')
-nombre_archivo = 'paisesmenosafectados.png'
-with open(nombre_archivo, "rb") as image_file:
-    encoded_string_ex_covid3 = base64.b64encode(image_file.read())
-    print(encoded_string_ex_covid3)
-
-print("Paises Mas Afectados")
-ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
-clean_countries = confirmedcovid.groupby('Country/Region', as_index=False)[confirmedcovid.columns[-1]].sum()
-clean_countries.head()
-top_covid_confirmed = clean_countries.nlargest(20, clean_countries.columns[-1])
-top_covid_confirmed.head()
-top_covid_confirmed_graph = top_covid_confirmed.plot.barh(x = 'Country/Region', y = top_covid_confirmed.columns[-1])
-top_covid_confirmed_graph.figure.savefig('paisesmasafectados.png', bbox_inches='tight')
-nombre_archivo = 'paisesmasafectados.png'
-with open(nombre_archivo, "rb") as image_file:
-    encoded_string_ex_covid4 = base64.b64encode(image_file.read())
-    print(encoded_string_ex_covid4)
-
-totaldecontagios= ultimo_confirmado.sum()
-totaldecontagios = int(totaldecontagios)
-totaldecontagios = "{:,}".format(totaldecontagios)
-print("TOTAL", totaldecontagios)
-
+    labels = 'Casos sobre Confirmados ', 'Casos sobre Mortalidad ', 'Casos sobre recuperados '
+    sizes = [totaldecontagios, totaldecontagiosdeath, totaldecontagiosrecovered]
+    explode = (0, 0, 0)  
+    
+    colors = ["green", "red", "blue"]
+    
+    fig = plt.figure()
+    ax = fig.add_axes([0,0,1,1])
+    
+    ax.bar(labels,sizes ,  color = colors)
+      
+    #plt.legend()
+    columns = list(confirmedcovid.columns)
+    plt.title('COVID-19: Aumento respecto al dia anterior: ' + columns[-2])
+    nombre_archivo = "barplot covid.png"
+    figure = plt.gcf() # get current figure
+    figure.set_size_inches(16, 8)
+    plt.xlabel('Tipo de Caso')
+    plt.ylabel('Cantidad')
+    plt.savefig(nombre_archivo, bbox_inches='tight')
+    with open(nombre_archivo, "rb") as image_file:
+        encoded_string_covid7 = base64.b64encode(image_file.read())
+        #print(encoded_string_covid7)
+    return encoded_string_covid7
+    
+crecimiento_diario()
+proporcion_de_contagios()
 def totaldecontagios_def():
     confirmedcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
     ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
