@@ -100,6 +100,17 @@ totaldecontagios = int(totaldecontagios)
 totaldecontagios = "{:,}".format(totaldecontagios)
 print("TOTAL", totaldecontagios)
 
-columnas = list(confirmedcovid.columns) 
-nombre_fecha_actual = columnas[-1]
-print(nombre_fecha_actual)
+def totaldecontagios_def():
+    confirmedcovid= pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
+    ultimo_confirmado = confirmedcovid[confirmedcovid.columns[-1]]
+    totaldecontagios= ultimo_confirmado.sum()
+    totaldecontagios = int(totaldecontagios)
+    totaldecontagios = "{:,}".format(totaldecontagios)
+    return totaldecontagios
+
+
+
+def nombre_fecha_actual():
+    global_confirmed = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
+    columns = list(global_confirmed.columns)
+    return columns[-1]

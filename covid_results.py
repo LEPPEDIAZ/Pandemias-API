@@ -13,6 +13,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 import datetime
 import operator 
 import base64
+from sklearn.model_selection import cross_val_score
 plt.style.use('fivethirtyeight')
 import warnings
 warnings.filterwarnings("ignore")

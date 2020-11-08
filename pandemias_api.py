@@ -2,6 +2,8 @@ from flask import Flask
 from vih_results import *
 from covid_results import *
 from covid_ex import *
+from covid_general_predictions import *
+
 from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
@@ -32,10 +34,10 @@ def vih_comparacion_homo():
 def vih_compracion_contagios():
     return encoded_string1
 
-@app.route('/covid/confirmados_polinomeal')
+@app.route('/covid/confirmados_red_neuronal')
 @cross_origin()
-def covid_confirmados_polinomeal():
-    return encoded_string_covid1
+def confirmados_red_neuronal():
+    return predicciones_generales("RedesNeuronales")
 
 @app.route('/covid/confirmados_red_bayesiana')
 @cross_origin()
@@ -100,12 +102,12 @@ def recuperacion_red_bayesiana_pais(pais):
 @app.route('/covid/total')
 @cross_origin()
 def covid_total_contagios():
-    return totaldecontagios
+    return totaldecontagios_def()
 
 @app.route('/covid/fecha_actual')
 @cross_origin()
 def covid_fecha_actual():
-    return nombre_fecha_actual
+    return nombre_fecha_actual()
 
 @app.route('/covid/provinciasmasafectadas')
 @cross_origin()
