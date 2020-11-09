@@ -99,9 +99,9 @@ def predicciones_generales(prediccion_escoger):
     world_cases = np.array(world_cases).reshape(-1, 1)
     total_deaths = np.array(total_deaths).reshape(-1, 1)
     total_recovered = np.array(total_recovered).reshape(-1, 1)
-    days_in_future = 50
+    days_in_future = 90
     future_forcast = np.array([i for i in range(len(dates)+days_in_future)]).reshape(-1, 1)
-    adjusted_dates = future_forcast[:-50]
+    adjusted_dates = future_forcast[:-90]
 
     import datetime
     start = '1/22/2020'
@@ -109,7 +109,7 @@ def predicciones_generales(prediccion_escoger):
     future_forcast_dates = []
     for i in range(len(future_forcast)):
         future_forcast_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
-    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[50:], world_cases[50:], test_size=0.05, shuffle=False)
+    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[90:], world_cases[90:], test_size=0.05, shuffle=False)
 
     svm_confirmed = SVR(shrinking=True, kernel='poly',gamma=0.01, epsilon=1,degree=3, C=0.1)
     svm_confirmed.fit(X_train_confirmed, y_train_confirmed)
@@ -198,7 +198,7 @@ def predicciones_generales(prediccion_escoger):
 
     from sklearn.linear_model import ElasticNetCV
     from sklearn.datasets import make_regression
-    regr = ElasticNetCV(cv=50, random_state=0)
+    regr = ElasticNetCV(cv=90, random_state=0)
     regr.fit(X_train_confirmed, y_train_confirmed)
     print(regr.alpha_)
     print(regr.intercept_)
@@ -234,6 +234,12 @@ def predicciones_generales(prediccion_escoger):
     scores = cross_val_score(clf, X_train_confirmed, predictneural, cv=5)
     scores
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    valor = scores.mean()*100
+    if (valor < 65 and prediccion_escoger == "RedesNeuronales"):
+        clf = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=100000000000000)
+        clf.fit(X_train_confirmed, y_train_confirmed)
+        predictneural = clf.predict(X_train_confirmed)
+        neuronal_pred = clf.predict(future_forcast)
     def country_plot(x, y1, y2, y3, y4, country):
         # window is set as 14 in in the beginning of the notebook 
         confirmed_avg = moving_average(y1, window)
@@ -622,9 +628,9 @@ def predicciones_mortalidad_generales(prediccion_escoger):
     world_cases = np.array(world_cases).reshape(-1, 1)
     total_deaths = np.array(total_deaths).reshape(-1, 1)
     total_recovered = np.array(total_recovered).reshape(-1, 1)
-    days_in_future = 50
+    days_in_future = 90
     future_forcast = np.array([i for i in range(len(dates)+days_in_future)]).reshape(-1, 1)
-    adjusted_dates = future_forcast[:-50]
+    adjusted_dates = future_forcast[:-90]
 
     import datetime
     start = '1/22/2020'
@@ -632,7 +638,7 @@ def predicciones_mortalidad_generales(prediccion_escoger):
     future_forcast_dates = []
     for i in range(len(future_forcast)):
         future_forcast_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
-    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[50:], world_cases[50:], test_size=0.05, shuffle=False)
+    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[90:], world_cases[90:], test_size=0.05, shuffle=False)
 
     svm_confirmed = SVR(shrinking=True, kernel='poly',gamma=0.01, epsilon=1,degree=3, C=0.1)
     svm_confirmed.fit(X_train_confirmed, y_train_confirmed)
@@ -721,7 +727,7 @@ def predicciones_mortalidad_generales(prediccion_escoger):
 
     from sklearn.linear_model import ElasticNetCV
     from sklearn.datasets import make_regression
-    regr = ElasticNetCV(cv=50, random_state=0)
+    regr = ElasticNetCV(cv=90, random_state=0)
     regr.fit(X_train_confirmed, y_train_confirmed)
     print(regr.alpha_)
     print(regr.intercept_)
@@ -757,6 +763,12 @@ def predicciones_mortalidad_generales(prediccion_escoger):
     scores = cross_val_score(clf, X_train_confirmed, predictneural, cv=5)
     scores
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    valor = scores.mean()*100
+    if (valor < 65 and prediccion_escoger == "RedesNeuronales"):
+        clf = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=100000000000000)
+        clf.fit(X_train_confirmed, y_train_confirmed)
+        predictneural = clf.predict(X_train_confirmed)
+        neuronal_pred = clf.predict(future_forcast)
     def country_plot(x, y1, y2, y3, y4, country):
         # window is set as 14 in in the beginning of the notebook 
         confirmed_avg = moving_average(y1, window)
@@ -1145,9 +1157,9 @@ def predicciones_recuperacion_generales(prediccion_escoger):
     world_cases = np.array(world_cases).reshape(-1, 1)
     total_deaths = np.array(total_deaths).reshape(-1, 1)
     total_recovered = np.array(total_recovered).reshape(-1, 1)
-    days_in_future = 50
+    days_in_future = 90
     future_forcast = np.array([i for i in range(len(dates)+days_in_future)]).reshape(-1, 1)
-    adjusted_dates = future_forcast[:-50]
+    adjusted_dates = future_forcast[:-90]
 
     import datetime
     start = '1/22/2020'
@@ -1155,7 +1167,7 @@ def predicciones_recuperacion_generales(prediccion_escoger):
     future_forcast_dates = []
     for i in range(len(future_forcast)):
         future_forcast_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
-    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[50:], world_cases[50:], test_size=0.05, shuffle=False)
+    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[90:], world_cases[90:], test_size=0.05, shuffle=False)
 
     svm_confirmed = SVR(shrinking=True, kernel='poly',gamma=0.01, epsilon=1,degree=3, C=0.1)
     svm_confirmed.fit(X_train_confirmed, y_train_confirmed)
@@ -1244,7 +1256,7 @@ def predicciones_recuperacion_generales(prediccion_escoger):
 
     from sklearn.linear_model import ElasticNetCV
     from sklearn.datasets import make_regression
-    regr = ElasticNetCV(cv=50, random_state=0)
+    regr = ElasticNetCV(cv=90, random_state=0)
     regr.fit(X_train_confirmed, y_train_confirmed)
     print(regr.alpha_)
     print(regr.intercept_)
@@ -1280,6 +1292,12 @@ def predicciones_recuperacion_generales(prediccion_escoger):
     scores = cross_val_score(clf, X_train_confirmed, predictneural, cv=5)
     scores
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    valor = scores.mean()*100
+    if (valor < 65 and prediccion_escoger == "RedesNeuronales"):
+        clf = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=100000000000000)
+        clf.fit(X_train_confirmed, y_train_confirmed)
+        predictneural = clf.predict(X_train_confirmed)
+        neuronal_pred = clf.predict(future_forcast)
     def country_plot(x, y1, y2, y3, y4, country):
         # window is set as 14 in in the beginning of the notebook 
         confirmed_avg = moving_average(y1, window)
@@ -1675,9 +1693,9 @@ def predicciones_por_pais_mortalidad(prediccion_escoger, pais):
     world_cases = np.array(world_cases).reshape(-1, 1)
     total_deaths = np.array(total_deaths).reshape(-1, 1)
     total_recovered = np.array(total_recovered).reshape(-1, 1)
-    days_in_future = 50
+    days_in_future = 90
     future_forcast = np.array([i for i in range(len(dates)+days_in_future)]).reshape(-1, 1)
-    adjusted_dates = future_forcast[:-50]
+    adjusted_dates = future_forcast[:-90]
 
     import datetime
     start = '1/22/2020'
@@ -1685,7 +1703,7 @@ def predicciones_por_pais_mortalidad(prediccion_escoger, pais):
     future_forcast_dates = []
     for i in range(len(future_forcast)):
         future_forcast_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
-    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[50:], world_cases[50:], test_size=0.05, shuffle=False)
+    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[90:], world_cases[90:], test_size=0.05, shuffle=False)
 
     svm_confirmed = SVR(shrinking=True, kernel='poly',gamma=0.01, epsilon=1,degree=3, C=0.1)
     svm_confirmed.fit(X_train_confirmed, y_train_confirmed)
@@ -1774,7 +1792,7 @@ def predicciones_por_pais_mortalidad(prediccion_escoger, pais):
 
     from sklearn.linear_model import ElasticNetCV
     from sklearn.datasets import make_regression
-    regr = ElasticNetCV(cv=50, random_state=0)
+    regr = ElasticNetCV(cv=90, random_state=0)
     regr.fit(X_train_confirmed, y_train_confirmed)
     print(regr.alpha_)
     print(regr.intercept_)
@@ -1810,6 +1828,12 @@ def predicciones_por_pais_mortalidad(prediccion_escoger, pais):
     scores = cross_val_score(clf, X_train_confirmed, predictneural, cv=5)
     scores
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    valor = scores.mean()*100
+    if (valor < 65 and prediccion_escoger == "RedesNeuronales"):
+        clf = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=100000000000000)
+        clf.fit(X_train_confirmed, y_train_confirmed)
+        predictneural = clf.predict(X_train_confirmed)
+        neuronal_pred = clf.predict(future_forcast)
     def country_plot(x, y1, y2, y3, y4, country):
         # window is set as 14 in in the beginning of the notebook 
         confirmed_avg = moving_average(y1, window)
@@ -2204,9 +2228,9 @@ def predicciones_por_pais(prediccion_escoger, pais):
     world_cases = np.array(world_cases).reshape(-1, 1)
     total_deaths = np.array(total_deaths).reshape(-1, 1)
     total_recovered = np.array(total_recovered).reshape(-1, 1)
-    days_in_future = 50
+    days_in_future = 90
     future_forcast = np.array([i for i in range(len(dates)+days_in_future)]).reshape(-1, 1)
-    adjusted_dates = future_forcast[:-50]
+    adjusted_dates = future_forcast[:-90]
 
     import datetime
     start = '1/22/2020'
@@ -2214,7 +2238,7 @@ def predicciones_por_pais(prediccion_escoger, pais):
     future_forcast_dates = []
     for i in range(len(future_forcast)):
         future_forcast_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
-    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[50:], world_cases[50:], test_size=0.05, shuffle=False)
+    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[90:], world_cases[90:], test_size=0.05, shuffle=False)
 
     svm_confirmed = SVR(shrinking=True, kernel='poly',gamma=0.01, epsilon=1,degree=3, C=0.1)
     svm_confirmed.fit(X_train_confirmed, y_train_confirmed)
@@ -2303,7 +2327,7 @@ def predicciones_por_pais(prediccion_escoger, pais):
 
     from sklearn.linear_model import ElasticNetCV
     from sklearn.datasets import make_regression
-    regr = ElasticNetCV(cv=50, random_state=0)
+    regr = ElasticNetCV(cv=90, random_state=0)
     regr.fit(X_train_confirmed, y_train_confirmed)
     print(regr.alpha_)
     print(regr.intercept_)
@@ -2339,6 +2363,12 @@ def predicciones_por_pais(prediccion_escoger, pais):
     scores = cross_val_score(clf, X_train_confirmed, predictneural, cv=5)
     scores
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    valor = scores.mean()*100
+    if (valor < 65 and prediccion_escoger == "RedesNeuronales"):
+        clf = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=100000000000000)
+        clf.fit(X_train_confirmed, y_train_confirmed)
+        predictneural = clf.predict(X_train_confirmed)
+        neuronal_pred = clf.predict(future_forcast)
     def country_plot(x, y1, y2, y3, y4, country):
         # window is set as 14 in in the beginning of the notebook 
         confirmed_avg = moving_average(y1, window)
@@ -2733,9 +2763,9 @@ def predicciones_por_pais_recuperacion(prediccion_escoger, pais):
     world_cases = np.array(world_cases).reshape(-1, 1)
     total_deaths = np.array(total_deaths).reshape(-1, 1)
     total_recovered = np.array(total_recovered).reshape(-1, 1)
-    days_in_future = 50
+    days_in_future = 90
     future_forcast = np.array([i for i in range(len(dates)+days_in_future)]).reshape(-1, 1)
-    adjusted_dates = future_forcast[:-50]
+    adjusted_dates = future_forcast[:-90]
 
     import datetime
     start = '1/22/2020'
@@ -2743,7 +2773,7 @@ def predicciones_por_pais_recuperacion(prediccion_escoger, pais):
     future_forcast_dates = []
     for i in range(len(future_forcast)):
         future_forcast_dates.append((start_date + datetime.timedelta(days=i)).strftime('%m/%d/%Y'))
-    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[50:], world_cases[50:], test_size=0.05, shuffle=False)
+    X_train_confirmed, X_test_confirmed, y_train_confirmed, y_test_confirmed = train_test_split(days_since_1_22[90:], world_cases[90:], test_size=0.05, shuffle=False)
 
     svm_confirmed = SVR(shrinking=True, kernel='poly',gamma=0.01, epsilon=1,degree=3, C=0.1)
     svm_confirmed.fit(X_train_confirmed, y_train_confirmed)
@@ -2832,7 +2862,7 @@ def predicciones_por_pais_recuperacion(prediccion_escoger, pais):
 
     from sklearn.linear_model import ElasticNetCV
     from sklearn.datasets import make_regression
-    regr = ElasticNetCV(cv=50, random_state=0)
+    regr = ElasticNetCV(cv=90, random_state=0)
     regr.fit(X_train_confirmed, y_train_confirmed)
     print(regr.alpha_)
     print(regr.intercept_)
@@ -2866,8 +2896,15 @@ def predicciones_por_pais_recuperacion(prediccion_escoger, pais):
 
 
     scores = cross_val_score(clf, X_train_confirmed, predictneural, cv=5)
-    scores
+
     print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    valor = scores.mean()*100
+    if (valor < 65 and prediccion_escoger == "RedesNeuronales"):
+        clf = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=100000000000000)
+        clf.fit(X_train_confirmed, y_train_confirmed)
+        predictneural = clf.predict(X_train_confirmed)
+        neuronal_pred = clf.predict(future_forcast)
+
     def country_plot(x, y1, y2, y3, y4, country):
         # window is set as 14 in in the beginning of the notebook 
         confirmed_avg = moving_average(y1, window)
